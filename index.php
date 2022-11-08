@@ -7,6 +7,8 @@
     </head>
     <body>
         <?php
+            include "db.php";
+
             echo "Hello, world! <br>";
             echo "Hi!";
         ?>
