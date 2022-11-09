@@ -1,4 +1,4 @@
--- Active: 1667902226832@@127.0.0.1@3306@alternatetake
+-- Active: 1668019281882@@silva.computing.dundee.ac.uk@3306@kamilkrauzedb
 CREATE TABLE payment (
     paymentID int NOT NULL,
     cardNo varchar(16) NOT NULL,
