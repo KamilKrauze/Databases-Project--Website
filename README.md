@@ -7,3 +7,4 @@ This includes the full website as well as the SQL queries used in the databases 
 - Euan West
 - Kamil Krauze
 - Vera Borvinski
+- Toms Popdjakuniks
