@@ -1,0 +1,141 @@
+body {
+    background-color: #ED2647 !important; 
+}
+
+nav {
+    margin-bottom: 15px;
+}
+
+/*
+    Navbar items underline transition
+    Source: https://codingyaar.com/responsive-bootstrap-navbar-underline-animation/
+    Date Accessed: 22/11/2022
+*/
+
+.navbar .navbar-nav .nav-link {
+    color: gray
+}
+
+.navbar .navbar-nav .nav-link:hover {
+    color: #8D021F;
+}
+
+.navbar .navbar-nav .nav-item{
+    position: relative;
+}
+
+.navbar .navbar-nav .nav-item::after{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 50;
+    margin: auto;
+    background-color: #5E1914;
+    width: 0%;
+    content: "";
+    height: 2px;
+    transition: all 0.854s;
+}
+
+.navbar .navbar-nav .nav-item:hover::after{
+    width: 100%;
+  }
+
+header {
+    padding-bottom: 20px;
+
+    border-width: 0;
+
+    border-bottom-width: 2.5px;
+    border-color: #5E1914;
+    border-style: solid;
+}
+
+header, h1 {
+    color: #5E1914;
+}
+
+div, h5 {
+    color:#5E1914;
+}
+
+div .footer {
+
+    background-color: #8D021F;
+    color:whitesmoke;
+    margin-top: 50px;
+    padding-top: 10px;
+
+    border-width: 0;
+    border-top-width: 2.5px;
+    border-top-color: #5E1914;
+    border-style: solid;
+}
+
+/**
+    BOOTSTRAP OVERRIDES
+*/
+#checkbox-dropdown{
+    width: 400px !important;
+    height: auto !important;
+    padding-left: 10px;
+}
+
+.row {
+    border-radius: 5px;
+}
+
+/*Button passive state*/
+.btn-secondary {
+    background-color: #5E1914;
+    color: #FFF;
+    border-color: #8D021F;
+    border-width: 2.5px;
+    border-radius: 5px;
+}
+
+/*Button dynamic update*/
+.btn-secondary:hover,
+.btn-secondary:focus,
+.btn-secondary:active    {
+    background-color: #8D021F;
+    color: #ED2647;
+    border-color: #8D021F;
+}
+
+/*Button passive state*/
+.btn-info {
+    margin-left: -12px;
+    scale: 65%;
+
+    background-color: #5E1914;
+    color: #FFF;
+    border-color: #8D021F;
+    border-width: 2.5px;
+    border-radius: 5px;
+}
+
+/*Button dynamic update*/
+.btn-info:hover,
+.btn-info:focus,
+.btn-info:active    {
+    background-color: #8D021F;
+    color: #ED2647;
+    border-color: #8D021F;
+}
+
+div .search-query .col-xs-12, div .search-query .col-xs-6 {
+    margin-top: 5px;
+}
+
+.contents {
+    margin-top: 20px;
+    margin-left: 12px;
+    margin-right: 12px;
+
+    background-color: white;
+}
+
+.contents .row {
+    margin-top: 5px;
+}
