@@ -60,7 +60,7 @@
                     </li>
                 </ul>
                 <form class="d-flex" role="search">
-                    <button class="btn btn-light" type="submit">Login</button>
+                    <button name="login_btn" class="btn btn-light" type="submit">Login</button>
                 </form>
             </div>
         </div>
@@ -184,7 +184,10 @@
                             <img class="img-fluid card-img-top" src="https://picsum.photos/2048/2048" alt="Card image cap">
                             <div class="card-body">
                                 <h5 class="card-title">'.$title.'</h5>
-                                <a href="#" class="btn btn-secondary">Add to basket</a>
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <button type="button" class="btn btn-secondary">Add</button>
+                                    <button type="button" class="btn btn-secondary">View</button>
+                                </div>
                             </div>
                         </div>
                     </div>                    
