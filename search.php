@@ -177,27 +177,38 @@
                 <?php
                 $title = "Some title...";
 
-                for ($i=0; $i < 12; $i++) {
-                    echo'
-                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-2">
-                        <div class="card mb-3">
-                            <img class="img-fluid card-img-top" src="https://picsum.photos/2048/2048" alt="Card image cap">
-                            <div class="card-body">
-                                <h5 class="card-title">'.$title.'</h5>
-                                <div class="btn-group" role="group" aria-label="Basic example">
-                                    <button type="button" class="btn btn-secondary">Add</button>
-                                    <button type="button" class="btn btn-secondary">View</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>                    
-                    ';
+                $query = ("SELECT * FROM product"); // Some arbitrary query.
+
+                if($result = mysqli_query($mysql, $query)) { //Gets result from query
+                    if (mysqli_num_rows($result) > 0) { //Checks whether there any rows in the table
+
+                        while($row = mysqli_fetch_array($result)) { // Get a row one by one
+                            $title = $row['productName']; //Get the column in row and set the value of '$title'. It can either be indexed like [1]=['productName'].
+
+                            echo'
+                                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-2">
+                                    <div class="card mb-3">
+                                        <img class="img-fluid card-img-top" src="https://picsum.photos/2048/2048" alt="Card image cap">
+                                        <div class="card-body">
+                                            <h5 class="card-title">'.$title.'</h5>
+                                            <div class="btn-group" role="group" aria-label="Basic example">
+                                                <button type="button" class="btn btn-secondary">Add</button>
+                                                <button type="button" class="btn btn-secondary">View</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                    
+                                ';
+                        }
+                    }
                 }
+
+                mysqli_close($mysql);
                 ?>
             </div>
         </div>
 
-        <div class="row ">
+        <div class="row">
             <?php
             echo'
                 <nav aria-label="Page navigation example">
