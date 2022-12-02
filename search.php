@@ -8,10 +8,10 @@
 
     <!-- Bootstrap stuff -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    
+
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
-
+    
     <?php
         include 'db.php';
     ?>
@@ -175,7 +175,7 @@
         <div class="contents text-center row">
             <div class="row">
                 <?php
-                $title = "Some title...";
+                //$title = "Some title...";
 
                 $query = ("SELECT * FROM product"); // Some arbitrary query.
 
@@ -183,21 +183,60 @@
                     if (mysqli_num_rows($result) > 0) { //Checks whether there any rows in the table
 
                         while($row = mysqli_fetch_array($result)) { // Get a row one by one
-                            $title = $row['productName']; //Get the column in row and set the value of '$title'. It can either be indexed like [1]=['productName'].
-
+                            
+                            // Print bootstrap cards in container
                             echo'
                                 <div class="col-xs-12 col-sm-12 col-md-4 col-lg-2">
+                                    
                                     <div class="card mb-3">
-                                        <img class="img-fluid card-img-top" src="https://picsum.photos/2048/2048" alt="Card image cap">
+                                        <img class="img-fluid card-img-top" src="https://picsum.photos/512/512" alt="Card image cap">
                                         <div class="card-body">
-                                            <h5 class="card-title">'.$title.'</h5>
+                                            <h5 class="card-title">'.$row['productName'].'</h5>
                                             <div class="btn-group" role="group" aria-label="Basic example">
                                                 <button type="button" class="btn btn-secondary">Add</button>
-                                                <button type="button" class="btn btn-secondary">View</button>
+                                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalProduct'.$row[0].'">
+                                                View
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
-                                </div>                    
+                    
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="modalProduct'.$row[0].'" tabindex="-1" aria-labelledby="modalProduct" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="modalProduct">'.$row[1].'</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <img class="img-fluid" src="https://picsum.photos/512/512" alt="Card image cap">
+                                                    <div class="container">
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <p>Type: php_var_here! </p>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <p>£ php_var_here!</p>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <p>Catalogue Number: php_var_here!</p>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <p>£ php_var_here!</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-secondary">Add to Basket</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
                                 ';
                         }
                     }
