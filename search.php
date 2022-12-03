@@ -20,6 +20,9 @@
     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="./css/card.css">
     <link rel="stylesheet" href="./css/search-php.css">
+
+    <!-- Custom Scripts -->
+    <script src="./scripts/search.js"></script>
 </head>
 
 <header>
@@ -77,7 +80,7 @@
                 <!-- Search Bar -->
                 <div class="search-query col-xs-12 col-md-3">
                     <form class="search bar d-flex" role="search">
-                        <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                        <input class="form-control" type="search" placeholder="Search" id="searchbar" onClick="fetchFromSearchBar()" aria-label="Search">
                     </form>
 
                 </div>
@@ -89,11 +92,22 @@
                         Music Type <!--Reactive to choice-->
                         </button>
                         <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Rock</a></li>
-                        <li><a class="dropdown-item" href="#">Classical</a></li>
-                        <li><a class="dropdown-item" href="#">Jazz</a></li>
-                        <li><a class="dropdown-item" href="#">Pop</a></li>
-                        <li><a class="dropdown-item" href="#">Punk Rock</a></li>
+                            <?php
+                            $get_genre = "SELECT DISTINCT genre FROM products";
+
+                            $stmt=$mysql->prepare($get_genre);
+                            $stmt->execute();
+                            $result = $stmt->get_result();
+
+                            while($row = $result->fetch_assoc())
+                            {
+                                if ($row['genre']!="") {
+                                echo '
+                                    <li><a class="dropdown-item" href="#">'.$row['genre'].'</a></li>
+                                ';
+                                }
+                            }
+                            ?>
                         </ul>
                     </div>
                 </div>
@@ -105,11 +119,21 @@
                         Format <!--Reactive to choice-->
                         </button>
                         <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">CD</a></li>
-                        <li><a class="dropdown-item" href="#">Vynil</a></li>
-                        <li><a class="dropdown-item" href="#">Digital</a></li>
-                        <li><a class="dropdown-item" href="#">Cassette</a></li>
-                        <li><a class="dropdown-item" href="#">Music Box</a></li>
+                            <?php
+                            $get_genre = "SELECT DISTINCT musicFormat FROM products";
+
+                            $stmt=$mysql->prepare($get_genre);
+                            $stmt->execute();
+                            $result = $stmt->get_result();
+
+                            while($row = $result->fetch_assoc()) {
+                                if($row['musicFormat'] != "") {
+                                    echo '
+                                    <li><a class="dropdown-item" href="#">'.$row['musicFormat'].'</a></li>
+                                    ';
+                                }
+                            }
+                            ?>
                         </ul>
                     </div>
                 </div>
@@ -122,24 +146,24 @@
                         </button>
                         <ul id="checkbox-dropdown" class="dropdown-menu checkbox-menu allow-focus">
                             <div class="row">
-                                <li class="col-xs-5 col-sm-4">
+                                <li class="col-sm-6 col-md-4">
                                     <input type="checkbox"> Category No.
                                 </li>
-                                <li class="col-xs-5 col-sm-4">
+                                <li class="col-sm-6 col-md-4">
                                     <input type="checkbox"> Title
                                 </li>
-                                <li class="col-xs-5 col-sm-4">
+                                <li class="col-sm-6 col-md-4">
                                     <input type="checkbox"> Artist
                                 </li>
                             </div>
                             <div class="row">
-                                <li class="col-4">
+                                <li class="col-sm-6 col-md-4">
                                     <input type="checkbox"> Label
                                 </li>
-                                <li class="col-4">
+                                <li class="col-sm-6 col-md-4">
                                     <input type="checkbox"> Year
                                 </li>
-                                <li class="col-4">
+                                <li class="col-sm-6 col-md-4">
                                     <input type="checkbox"> Price
                                 </li>
                             </div>
@@ -160,10 +184,14 @@
                         Order by <!--Reactive to choice-->
                         </button>
                         <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Recent</a></li>
-                        <li><a class="dropdown-item" href="#">Ascending</a></li>
-                        <li><a class="dropdown-item" href="#">Descending</a></li>
-                        <li><a class="dropdown-item" href="#">Least Recent</a></li>
+                            <?php
+                            echo '
+                            <li><a class="dropdown-item" href="#">Recent</a></li>
+                            <li><a class="dropdown-item" href="#">Ascending</a></li>
+                            <li><a class="dropdown-item" href="#">Descending</a></li>
+                            <li><a class="dropdown-item" href="#">Least Recent</a></li>
+                            ';
+                            ?>
                         </ul>
                     </div>
                 </div>
@@ -175,120 +203,123 @@
         <div class="contents text-center row">
             <div class="row">
                 <?php
-                //$title = "Some title...";
+                $productName = "%";
+                $extra_query = "";
+                // User defined select
+                $select_view = "SELECT * FROM 22ac3d06.products WHERE productName LIKE ?" .$extra_query;
 
-                // view query
-                $query_view = ("
-                SELECT * FROM 22ac3d06.products;
-                ");
-                
-                if($result = mysqli_query($mysql, $query_view)) { //Gets result from query
-                    if (mysqli_num_rows($result) > 0) { //Checks whether there any rows in the table
+                $stmt=$mysql->prepare($select_view);
+                $stmt->bind_param("s", $productName);
+                $stmt->execute();
+                $result = $stmt->get_result();
 
-                        while($row = mysqli_fetch_array($result)) { // Get a row one by one
+                while($row = $result->fetch_assoc()) { // Get a row one by one
 
-                            $productName = $row['productName'];
+                    $productID = $row['productID'];
+                    $productName = $row['productName'];
 
-                            // Print bootstrap cards in container
-                            echo'
-                                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-2">
-                                    
-                                    <div class="card mb-3">
-                                        <img class="img-fluid card-img-top" src="https://picsum.photos/512/512" alt="Card image cap">
-                                        <div class="card-body">
-                                            <h5 class="card-title">'.$productName.'</h5>
-                                            <div class="btn-group" role="group" aria-label="Basic example">
-                                                <button type="button" class="btn btn-secondary">Add</button>
-                                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalProduct'.$row[0].'">
-                                                View
-                                                </button>
-                                            </div>
-                                        </div>
+                    // Print bootstrap cards in container
+                    echo'
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-2">
+                            <!-- Card -->
+                            <div class="card mb-3">
+                                <img class="img-fluid card-img-top" src="https://picsum.photos/512/512" alt="Card image cap">
+                                <div class="card-body">
+                                    <h5 class="card-title">'.$productName.'</h5>
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <button type="button" class="btn btn-secondary">Add</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalProduct'.$productID.'">
+                                        View
+                                        </button>
                                     </div>
-                    
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="modalProduct'.$row[0].'" tabindex="-1" aria-labelledby="modalProduct'.$row[0].'" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="modalProduct">'.$productName.'</h1>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <img class="img-fluid" src="https://picsum.photos/512/512" alt="Card image cap">
-                                                    <div class="container">
-                                                        <div class="row">
-                                                        ';
-                                                        if ($row['catNo'] != "")
-                                                        {
-                                                            echo '<div class="col-12">
-                                                            <p><b>Catalogue Number</b>: '.$row['catNo'].'</p>
-                                                            </div>';
-                                                        }
-                                                        echo
-                                                        '
-                                                            <div class="col-4">
-                                                                <p><b>Type</b>: '.$row['productType'].'</p>
-                                                            </div>
-                                                            <div class="col-5">
-                                                                <p><b>Left in Stock</b>: '.$row['quantity'].'</p>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <p><b>Price</b>: £ '.$row['retailPrice'].'</p>
-                                                            </div>
-                                                        ';
-
-                                                        if ($row['catNo'] != "")
-                                                        {
-                                                            echo '
-                                                            <div class="col-6">
-                                                                <p><b>Artist</b>: '.$row['artist'].'</p>
-                                                            </div>
-                                                            <div class="col-6">
-                                                                <p><b>Label</b>: '.$row['label'].'</p>
-                                                            </div>
-                                                            <div class="col-4">
-                                                                <p><b>Year</b>: '.$row['yearRelease'].'</p>
-                                                            </div>
-                                                            <div class="col-4">
-                                                                <p><b>Format</b>: '.$row['musicFormat'].'</p>
-                                                            </div>
-                                                            ';
-                                                            if ($row['size'] != "") {
-                                                                echo '
-                                                                <div class="col-4">
-                                                                    <p><b>Size</b>: '.$row['size'].'</p>
-                                                                </div>
-                                                                <div class="col-4">
-                                                                    <p><b>Size</b>: '.$row['speedRPM'].' RPM</p>
-                                                                </div>
-                                                                ';
-                                                            }
-                                                            echo'
-                                                            <div class="col-4">
-                                                                <p><b>Country</b>: '.$row['country'].'</p>
-                                                            </div>
-                                                            <div class="col-4">
-                                                                <p><b>Genre</b>: '.$row['genre'].'</p>
-                                                            </div>
-                                                            ';
-                                                        }
-                                                        echo '
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn btn-secondary">Add to Basket</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                 </div>
-                                ';
-                        }
-                    }
+                            </div>
+            
+                            <!-- Modal -->
+                            <div class="modal fade" id="modalProduct'.$productID.'" tabindex="-1" aria-labelledby="modalProduct'.$productID.'" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="modalProduct">'.$productName.'</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <img class="img-fluid" src="https://picsum.photos/512/512" alt="Card image cap">
+                                            <div class="container">
+                                                <div class="row">
+                                                ';
+                                                
+                                                if ($row['catNo'] != "")
+                                                {
+                                                    echo '
+                                                    <div class="col-12">
+                                                        <p><b>Catalogue Number</b>: '.$row['catNo'].'</p>
+                                                    </div>
+                                                    ';
+                                                }
+                                                
+                                                echo
+                                                '
+                                                    <div class="col-4">
+                                                        <p><b>Type</b>: '.$row['productType'].'</p>
+                                                    </div>
+                                                    <div class="col-5">
+                                                        <p><b>Left in Stock</b>: '.$row['quantity'].'</p>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <p><b>Price</b>: £ '.$row['retailPrice'].'</p>
+                                                    </div>
+                                                ';
+
+                                                if ($row['catNo'] != "")
+                                                {
+                                                    echo '
+                                                    <div class="col-6">
+                                                        <p><b>Artist</b>: '.$row['artist'].'</p>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <p><b>Label</b>: '.$row['label'].'</p>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <p><b>Year</b>: '.$row['yearRelease'].'</p>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <p><b>Format</b>: '.$row['musicFormat'].'</p>
+                                                    </div>
+                                                    ';
+                                                if ($row['size'] != "") {
+                                                    echo '
+                                                    <div class="col-4">
+                                                        <p><b>Size</b>: '.$row['size'].'</p>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <p><b>Size</b>: '.$row['speedRPM'].' RPM</p>
+                                                    </div>
+                                                    ';
+                                                }
+                                                    echo'
+                                                    <div class="col-4">
+                                                        <p><b>Country</b>: '.$row['country'].'</p>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <p><b>Genre</b>: '.$row['genre'].'</p>
+                                                    </div>
+                                                    ';
+                }
+                                                echo '
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-secondary">Add to Basket</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        ';
                 }
 
                 mysqli_close($mysql);
