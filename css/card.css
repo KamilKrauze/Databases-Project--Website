@@ -1,0 +1,26 @@
+.card {
+    border-radius: 8px;
+    border-width: 2.5px;
+    
+    border-color: #8D021F;
+    background-color: #c9c9c9;
+}
+
+.card-img.top {
+    border: 10px !important;
+    border-radius: 8px;
+    border-top-width: 50px !important;
+
+    border-color: #26ff00 !important;
+}
+
+.card-body {
+    border-radius: 8px;
+    border: 0px;
+    border-top: 1px;
+    border-top-width: 1px;
+    border-color: #8D021F;
+
+
+    background-color: #c9c9c9;
+}

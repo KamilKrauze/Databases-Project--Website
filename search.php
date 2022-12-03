@@ -177,13 +177,18 @@
                 <?php
                 //$title = "Some title...";
 
-                $query = ("SELECT * FROM product"); // Some arbitrary query.
-
-                if($result = mysqli_query($mysql, $query)) { //Gets result from query
+                // view query
+                $query_view = ("
+                SELECT * FROM 22ac3d06.products;
+                ");
+                
+                if($result = mysqli_query($mysql, $query_view)) { //Gets result from query
                     if (mysqli_num_rows($result) > 0) { //Checks whether there any rows in the table
 
                         while($row = mysqli_fetch_array($result)) { // Get a row one by one
-                            
+
+                            $productName = $row['productName'];
+
                             // Print bootstrap cards in container
                             echo'
                                 <div class="col-xs-12 col-sm-12 col-md-4 col-lg-2">
@@ -191,7 +196,7 @@
                                     <div class="card mb-3">
                                         <img class="img-fluid card-img-top" src="https://picsum.photos/512/512" alt="Card image cap">
                                         <div class="card-body">
-                                            <h5 class="card-title">'.$row['productName'].'</h5>
+                                            <h5 class="card-title">'.$productName.'</h5>
                                             <div class="btn-group" role="group" aria-label="Basic example">
                                                 <button type="button" class="btn btn-secondary">Add</button>
                                                 <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalProduct'.$row[0].'">
@@ -202,29 +207,73 @@
                                     </div>
                     
                                     <!-- Modal -->
-                                    <div class="modal fade" id="modalProduct'.$row[0].'" tabindex="-1" aria-labelledby="modalProduct" aria-hidden="true">
+                                    <div class="modal fade" id="modalProduct'.$row[0].'" tabindex="-1" aria-labelledby="modalProduct'.$row[0].'" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="modalProduct">'.$row[1].'</h1>
+                                                    <h1 class="modal-title fs-5" id="modalProduct">'.$productName.'</h1>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
                                                     <img class="img-fluid" src="https://picsum.photos/512/512" alt="Card image cap">
                                                     <div class="container">
                                                         <div class="row">
+                                                        ';
+                                                        if ($row['catNo'] != "")
+                                                        {
+                                                            echo '<div class="col-12">
+                                                            <p><b>Catalogue Number</b>: '.$row['catNo'].'</p>
+                                                            </div>';
+                                                        }
+                                                        echo
+                                                        '
+                                                            <div class="col-4">
+                                                                <p><b>Type</b>: '.$row['productType'].'</p>
+                                                            </div>
+                                                            <div class="col-5">
+                                                                <p><b>Left in Stock</b>: '.$row['quantity'].'</p>
+                                                            </div>
+                                                            <div class="col-3">
+                                                                <p><b>Price</b>: £ '.$row['retailPrice'].'</p>
+                                                            </div>
+                                                        ';
+
+                                                        if ($row['catNo'] != "")
+                                                        {
+                                                            echo '
                                                             <div class="col-6">
-                                                                <p>Type: php_var_here! </p>
+                                                                <p><b>Artist</b>: '.$row['artist'].'</p>
                                                             </div>
                                                             <div class="col-6">
-                                                                <p>£ php_var_here!</p>
+                                                                <p><b>Label</b>: '.$row['label'].'</p>
                                                             </div>
-                                                            <div class="col-12">
-                                                                <p>Catalogue Number: php_var_here!</p>
+                                                            <div class="col-4">
+                                                                <p><b>Year</b>: '.$row['yearRelease'].'</p>
                                                             </div>
-                                                            <div class="col-6">
-                                                                <p>£ php_var_here!</p>
+                                                            <div class="col-4">
+                                                                <p><b>Format</b>: '.$row['musicFormat'].'</p>
                                                             </div>
+                                                            ';
+                                                            if ($row['size'] != "") {
+                                                                echo '
+                                                                <div class="col-4">
+                                                                    <p><b>Size</b>: '.$row['size'].'</p>
+                                                                </div>
+                                                                <div class="col-4">
+                                                                    <p><b>Size</b>: '.$row['speedRPM'].' RPM</p>
+                                                                </div>
+                                                                ';
+                                                            }
+                                                            echo'
+                                                            <div class="col-4">
+                                                                <p><b>Country</b>: '.$row['country'].'</p>
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <p><b>Genre</b>: '.$row['genre'].'</p>
+                                                            </div>
+                                                            ';
+                                                        }
+                                                        echo '
                                                         </div>
                                                     </div>
                                                 </div>

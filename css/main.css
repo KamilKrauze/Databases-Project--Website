@@ -119,9 +119,9 @@ div .footer {
 .btn-info:hover,
 .btn-info:focus,
 .btn-info:active    {
-    background-color: #8D021F;
-    color: #ED2647;
-    border-color: #8D021F;
+    background-color: #8D021F !important;
+    color: #ED2647 !important;
+    border-color: #8D021F !important;
 }
 
 div .search-query .col-xs-12, div .search-query .col-xs-6 {
@@ -131,7 +131,7 @@ div .search-query .col-xs-12, div .search-query .col-xs-6 {
 .contents {
     margin-top: 20px;
     margin-left: 12px;
-    margin-right: 12px;
+    margin-right: 20px;
 
     background-color: white;
 }
