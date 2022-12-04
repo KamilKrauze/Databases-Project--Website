@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="./css/card.css">
     <link rel="stylesheet" href="./css/search-php.css">
 
-    <!-- Custom Scripts -->
+    <!-- Custom scripts -->
     <script src="./scripts/search.js"></script>
 </head>
 
@@ -79,11 +79,21 @@
             <div class="row">
                 <!-- Search Bar -->
                 <div class="search-query col-xs-12 col-md-3">
-                    <form class="search bar d-flex" role="search">
-                        <input class="form-control" type="search" placeholder="Search" id="searchbar" onClick="fetchFromSearchBar()" aria-label="Search">
+                    <form  id="searchbar" class="search bar d-flex" role="search" action="<?php echo $_SERVER["PHP_SELF"];?>" method="post">
+                        <input name="search" class="form-control" type="text" placeholder="Search" aria-label="Search">
                     </form>
-
                 </div>
+
+                <?php
+
+                $search = "";
+                    if (isset($_REQUEST['search'])) {
+                        if ($_REQUEST['search'] != "") {
+                            $search = $_REQUEST['search'];
+                        }
+                    }
+
+                ?>
 
                 <!-- Music type dropdown -->
                 <div class="search-query col-xs-6 col-md-auto">
@@ -93,6 +103,7 @@
                         </button>
                         <ul class="dropdown-menu">
                             <?php
+
                             $get_genre = "SELECT DISTINCT genre FROM products";
 
                             $stmt=$mysql->prepare($get_genre);
@@ -203,15 +214,18 @@
         <div class="contents text-center row">
             <div class="row">
                 <?php
-                $productName = "%";
-                $extra_query = "";
+                $productName = "%" .$search. "%";
+                //$extra_query = "speak%";
                 // User defined select
-                $select_view = "SELECT * FROM 22ac3d06.products WHERE productName LIKE ?" .$extra_query;
+                $select_view = "SELECT * FROM 22ac3d06.products WHERE productName LIKE ?";
 
                 $stmt=$mysql->prepare($select_view);
                 $stmt->bind_param("s", $productName);
+                //$stmt->bind_param("s", $extra_query);
                 $stmt->execute();
                 $result = $stmt->get_result();
+                
+                
 
                 while($row = $result->fetch_assoc()) { // Get a row one by one
 
