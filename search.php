@@ -104,7 +104,7 @@
                         <ul class="dropdown-menu">
                             <?php
 
-                            $get_genre = "SELECT DISTINCT genre FROM products";
+                            $get_genre = "SELECT DISTINCT genre FROM v_products";
 
                             $stmt=$mysql->prepare($get_genre);
                             $stmt->execute();
@@ -131,7 +131,7 @@
                         </button>
                         <ul class="dropdown-menu">
                             <?php
-                            $get_genre = "SELECT DISTINCT musicFormat FROM products";
+                            $get_genre = "SELECT DISTINCT musicFormat FROM v_products";
 
                             $stmt=$mysql->prepare($get_genre);
                             $stmt->execute();
@@ -140,7 +140,7 @@
                             while($row = $result->fetch_assoc()) {
                                 if($row['musicFormat'] != "") {
                                     echo '
-                                    <li><a class="dropdown-item" href="#">'.$row['musicFormat'].'</a></li>
+                                    <li><a class="dropdown-item" name="'.$row['musicFormat'].'" href="#">'.$row['musicFormat'].'</a></li>
                                     ';
                                 }
                             }
@@ -210,14 +210,14 @@
         </div>
 
         <!--Example content to get an idea what this could contain and how it displays-->
-        <!--Add cards probably for displaying products in the search page-->
+        <!--Add cards probably for displaying v_products in the search page-->
         <div class="contents text-center row">
             <div class="row">
                 <?php
                 $productName = "%" .$search. "%";
                 //$extra_query = "speak%";
                 // User defined select
-                $select_view = "SELECT * FROM 22ac3d06.products WHERE productName LIKE ?";
+                $select_view = "SELECT * FROM 22ac3d06.v_products WHERE productName LIKE ?";
 
                 $stmt=$mysql->prepare($select_view);
                 $stmt->bind_param("s", $productName);

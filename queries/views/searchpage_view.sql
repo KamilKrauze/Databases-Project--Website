@@ -1,4 +1,4 @@
-CREATE VIEW products
+CREATE VIEW v_products
 AS
 SELECT
     s.productID, s.quantity,
