@@ -12,6 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
     
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <?php
         include 'db.php';
     ?>
@@ -21,8 +22,6 @@
     <link rel="stylesheet" href="./css/card.css">
     <link rel="stylesheet" href="./css/search-php.css">
 
-    <!-- Custom scripts -->
-    <script src="./scripts/search.js"></script>
 </head>
 
 <header>
@@ -62,8 +61,8 @@
                         </a>
                     </li>
                 </ul>
-                <form class="d-flex" role="search">
-                    <button name="login_btn" class="btn btn-light" type="submit">Login</button>
+                <form class="d-flex">
+                    <button name="login_btn" class="btn btn-light" type="button" onclick="sendToLogin(this)" aria-label="template.php">Login</button>
                 </form>
             </div>
         </div>
@@ -149,45 +148,6 @@
                     </div>
                 </div>
 
-                <!-- Sort by dropdown -->
-                <div class="search-query col-xs-6 col-md-auto">
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Sort by <!--Reactive to choice-->
-                        </button>
-                        <ul id="checkbox-dropdown" class="dropdown-menu checkbox-menu allow-focus">
-                            <div class="row">
-                                <li class="col-sm-6 col-md-4">
-                                    <input type="checkbox"> Category No.
-                                </li>
-                                <li class="col-sm-6 col-md-4">
-                                    <input type="checkbox"> Title
-                                </li>
-                                <li class="col-sm-6 col-md-4">
-                                    <input type="checkbox"> Artist
-                                </li>
-                            </div>
-                            <div class="row">
-                                <li class="col-sm-6 col-md-4">
-                                    <input type="checkbox"> Label
-                                </li>
-                                <li class="col-sm-6 col-md-4">
-                                    <input type="checkbox"> Year
-                                </li>
-                                <li class="col-sm-6 col-md-4">
-                                    <input type="checkbox"> Price
-                                </li>
-                            </div>
-
-                            <div class="row">
-                                <li>
-                                    <button type="button" class="btn btn-info">Reset</button>
-                                </li>
-                            </div>
-                        </ul>
-                    </div>
-                </div>
-
                 <!-- Order by dropdown -->
                 <div class="search-query col-xs-6 col-md-auto">
                     <div class="dropdown">
@@ -206,6 +166,39 @@
                         </ul>
                     </div>
                 </div>
+
+                <div class="search-query col-xs-12 col-md-auto d-flex flex-row-reverse">
+                    <button id="btn-basket" class="btn" type="button" aria-label="basket" data-bs-toggle="modal" data-bs-target="#modal_checkout">
+                        Basket
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="modal_checkout" tabindex="-1" aria-labelledby="checkout-modal-label" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="checkout-modal-label">Checkout</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div id="checkout-modal-body row" class="modal-body" style="height:450px; overflow-y:scroll;">
+                                    <p class="placeholder-text">*cricket noises*</p>
+                                    <p class="placeholder-text">No items added</p>
+                                    <ul id="basket-list" class="list-group input-group">
+                                        <!-- JS script adds here.... -->
+                                    </ul>
+                                </div>
+                                <div id="modal-total-price" style="margin-left:1.5%;">
+                                    <p id="total-price"><b>Total</b>: £ 0.00</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" onclick="checkOutBasket(this)" id="btn-checkout" class="btn btn-primary">Checkout</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
 
@@ -217,16 +210,14 @@
                 $productName = "%" .$search. "%";
                 //$extra_query = "speak%";
                 // User defined select
-                $select_view = "SELECT * FROM 22ac3d06.v_products WHERE productName LIKE ?";
+                $select_view = "SELECT * FROM 22ac3d06.v_products WHERE productName LIKE ? GROUP BY productID";
 
                 $stmt=$mysql->prepare($select_view);
                 $stmt->bind_param("s", $productName);
                 //$stmt->bind_param("s", $extra_query);
                 $stmt->execute();
-                $result = $stmt->get_result();
+                $result = $stmt->get_result();             
                 
-                
-
                 while($row = $result->fetch_assoc()) { // Get a row one by one
 
                     $productID = $row['productID'];
@@ -241,7 +232,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title">'.$productName.'</h5>
                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                        <button type="button" class="btn btn-secondary">Add</button>
+                                        <button onclick="addItemToBasket(this)" aria-label="'.$productID.'" type="button" class="btn btn-secondary">Add</button>
                                         <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalProduct'.$productID.'">
                                         View
                                         </button>
@@ -363,6 +354,9 @@
             </div>
         </div>
     </div>
+
+    <!-- Custom scripts -->
+    <script src="./scripts/button.js"></script>
 </body>
 
 </html>
