@@ -204,7 +204,7 @@
 
         <!--Example content to get an idea what this could contain and how it displays-->
         <!--Add cards probably for displaying v_products in the search page-->
-        <div class="contents text-center row">
+        <div class="contents text-center row" style="height: 85vh; overflow-y: scroll;">
             <div class="row">
                 <?php
                 $productName = "%" .$search. "%";
@@ -227,10 +227,12 @@
                     echo'
                         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-2">
                             <!-- Card -->
-                            <div class="card mb-3">
+                            <div class="card my-2" style="height:45vh;">
                                 <img class="img-fluid card-img-top" src="https://picsum.photos/512/512" alt="Card image cap">
                                 <div class="card-body">
                                     <h5 class="card-title">'.$productName.'</h5>
+                                </div>
+                                <div class="card-footer">
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         <button onclick="addItemToBasket(this)" aria-label="'.$productID.'" type="button" class="btn btn-secondary">Add</button>
                                         <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalProduct'.$productID.'">
@@ -330,21 +332,6 @@
                 mysqli_close($mysql);
                 ?>
             </div>
-        </div>
-
-        <div class="row">
-            <?php
-            echo'
-                <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center my-3">
-                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                </ul>
-                </nav>';
-            ?>
         </div>
 
         <div class="row">

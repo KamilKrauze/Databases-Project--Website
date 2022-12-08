@@ -3,6 +3,7 @@ var basketItemPrice = [];
 var basketItemQuantity = [];
 var totalPrice = 0.0;
 
+// Update total cost on value change of input box
 function updateTotalCost(element) {
     if ((basket.length > 0) && (basketItemPrice.length > 0) && (basketItemQuantity.length > 0))
     {
@@ -17,6 +18,7 @@ function updateTotalCost(element) {
     }
 }
 
+// Send to page
 function sentToPage(element) {
 
     let page = element.ariaLabel;
@@ -26,6 +28,7 @@ function sentToPage(element) {
     console.log("Sent succesfully");
 }
 
+// Recalculate total price
 function reCalculateTotalPrice() {
     totalPrice = 0.0;
     for (let i=0; i<basketItemPrice.length; i++) {
@@ -33,6 +36,7 @@ function reCalculateTotalPrice() {
     }
 }
 
+// Add item to basket and recalculate total price
 function addItemToBasket(button) {
     let itemID = button.ariaLabel;
 
@@ -75,6 +79,7 @@ function addItemToBasket(button) {
     );
 }
 
+// Remove
 function removeItemFromBasket(button) {
 
     if (button.id != "btn-remove-item") { return; }
@@ -129,13 +134,16 @@ function checkOutBasket(button) {
 
                 $('#total-price').remove();
                 $('#modal-total-price').append(`<p id="total-price"><b>Total</b>: £ 0.00</p>`);
+
+                $("#checkout-modal-body").append('<p class="placeholder-text">*cricket noises*</p>');
+                $("#checkout-modal-body").append('<p class="placeholder-text">No items added</p>');
+            }
+            else if (return_result = "NOT_ENOUGH_STOCK_AVAILABLE") {
+                window.alert("Not enough stock is available");
             }
             else {
                 console.log(response);
             }
         });
     }
-
-    // $("#checkout-modal-body").append('<p class="placeholder-text">*cricket noises*</p>');
-    // $("#checkout-modal-body").append('<p class="placeholder-text">No items added</p>');
 }

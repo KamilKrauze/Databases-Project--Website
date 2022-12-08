@@ -82,7 +82,7 @@ div .footer {
 }
 
 .row {
-    border-radius: 5px;
+    border-radius: 8px;
 }
 
 /*Button passive state*/
@@ -129,13 +129,14 @@ div .search-query .col-xs-12, div .search-query .col-xs-6 {
 }
 
 .contents {
+    border: 2px;
+    border-radius: 10px;
+    border-color: #c3032c;
+    border-style:solid;
+
     margin-top: 20px;
     margin-left: 12px;
     margin-right: 20px;
 
     background-color: white;
-}
-
-.contents .row {
-    margin-top: 5px;
 }
