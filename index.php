@@ -173,182 +173,263 @@
                 <div class="col-3"></div>
                 <div class="col-6">
                     <?php
+
+                        //Initialise Variables
+                        $output = array();
+                        include ('db.php');// conect to database script
+                        $query = 
+                        "
+                          SELECT productID, productName, retailPrice, artist, musicFormat
+                          FROM product 
+                          LEFT JOIN musicspec
+                          ON product.catNo = musicspec.catNo
+                          ORDER BY RAND()
+                          lIMIT 5;
+                        ";
+                        $result = mysqli_query($mysql, $query);
+
+                        //append results to array
+                        while ($row = mysqli_fetch_array($result))
+                        {
+                          array_push($output, $row);
+                        }
+                        
+                        //Start writing carousel
                         echo
-                        '
-                        <div id="carouselBig" class="carousel slide" data-bs-ride="false">
-                        <div class="carousel-indicators">
-                          <button type="button" data-bs-target="#carouselBig" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                          <button type="button" data-bs-target="#carouselBig" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                          <button type="button" data-bs-target="#carouselBig" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                        "
+                          <div id='carouselBig' class='carousel slide' data-bs-ride='false'>
+                          <div class='carousel-indicators'>
+                            <button type='button' data-bs-target='#carouselBig' data-bs-slide-to='0' class='active' aria-current='true' aria-label='Slide 1'></button>
+                            <button type='button' data-bs-target='#carouselBig' data-bs-slide-to='1' aria-label='Slide 2'></button>
+                            <button type='button' data-bs-target='#carouselBig' data-bs-slide-to='2' aria-label='Slide 3'></button>
+                            <button type='button' data-bs-target='#carouselBig' data-bs-slide-to='3' aria-label='Slide 4'></button>
+                            <button type='button' data-bs-target='#carouselBig' data-bs-slide-to='4' aria-label='Slide 5'></button>
+                          </div>
+                          <div class='carousel-inner'>
+                            <div class='carousel-item active'>
+                              <img src='.\media\img\productImages\\".$output[0]["productID"].".jpg' class='d-block w-100' style='width:750px; height: 750px;' alt='Image of Featured'>
+                              <div class='carousel-caption d-none d-md-block bg-danger bg-opacity-50 ' >
+                                <h5>".$output[0]["productName"]."</h5>
+                        ";
+                        if (is_null($output[0]["artist"]))
+                        {
+                          echo "<p style='font-align: center;'>Price: £".$output[0]["retailPrice"]."</p>";
+                        }
+                        else
+                        {
+                          echo "<p style='font-align: center;'>Artist: ".$output[0]["artist"].", Format: ".$output[0]["musicFormat"].", Price: £".$output[0]["retailPrice"]."</p>";
+                        }
+                        echo
+                        "     
+                            </div>
+                          </div>
+                        ";
+                        for ($i = 1; $i <= 4; $i++)
+                        {
+                          echo
+                          "
+                            <div class='carousel-item'>
+                              <img src='.\media\img\productImages\\".$output[$i]["productID"].".jpg' class='d-block w-100' style='width:750px; height: 750px;' alt='Image of Featured'>
+                              <div class='carousel-caption d-none d-md-block bg-danger bg-opacity-50'>
+                                <h5>".$output[$i]["productName"]."</h5>
+                          ";
+                              if (is_null($output[$i]["artist"]))
+                              {
+                                echo "<p style='font-align: center;'>Price: £".$output[$i]["retailPrice"]."</p>";
+                              }
+                              else
+                              {
+                                echo "<p style='font-align: center;'>Artist: ".$output[$i]["artist"].", Format: ".$output[$i]["musicFormat"].", Price: £".$output[$i]["retailPrice"]."</p>";
+                              }
+                          echo 
+                          "
+                              </div>
+                            </div>
+                          ";
+                        }
+                        echo 
+                        "
+                          </div>
+                          <button class='carousel-control-prev' type='button' data-bs-target='#carouselBig' data-bs-slide='prev'>
+                            <span class='carousel-control-prev-icon' aria-hidden='true'></span>
+                            <span class='visually-hidden'>Previous</span>
+                          </button>
+                          <button class='carousel-control-next' type='button' data-bs-target='#carouselBig' data-bs-slide='next'>
+                            <span class='carousel-control-next-icon' aria-hidden='true'></span>
+                            <span class='visually-hidden'>Next</span>
+                          </button>
                         </div>
-                        <div class="carousel-inner">
-                          <div class="carousel-item active">
-                            <img src="https://i.picsum.photos/id/609/600/300.jpg?hmac=ReCZwP7Cl1ArvB2Ian1R3I6LFub0xk55P1wu_-5toi8" class="d-block w-100" alt="...">
-                            <div class="carousel-caption d-none d-md-block bg-danger bg-opacity-50 " >
-                              <h5>First slide label</h5>
-                              <p>Some representative placeholder content for the first slide.</p>
-                            </div>
-                          </div>
-                          <div class="carousel-item">
-                            <img src="https://i.picsum.photos/id/602/1000/500.jpg?hmac=445kr9w7gsS3vMlbXggYHC-uI6Rt-9FYMyOccPP7o0Y" class="d-block w-100" alt="...">
-                            <div class="carousel-caption d-none d-md-block bg-danger bg-opacity-50">
-                              <h5>Second slide label</h5>
-                              <p>Some representative placeholder content for the second slide.</p>
-                            </div>
-                          </div>
-                          <div class="carousel-item">
-                            <img src="https://i.picsum.photos/id/276/1000/500.jpg?hmac=ktb25tDHaquYFYMRE0eYeiW234D1fJ2ciCiXdCXPZ_Y" class="d-block w-100" alt="...">
-                            <div class="carousel-caption d-none d-md-block bg-danger bg-opacity-50">
-                              <h5>Third slide label</h5>
-                              <p>Some representative placeholder content for the third slide.</p>
-                            </div>
-                          </div>
-                        </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselBig" data-bs-slide="prev">
-                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                          <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselBig" data-bs-slide="next">
-                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                          <span class="visually-hidden">Next</span>
-                        </button>
-                      </div>
-                        '
+                        ";
                     ?>
                 </div>
                 <div class="col-3"></div>
             </div>
         </div>
 
+        <!-- GAllery to show best sellin products -->
         <div class="contents row">
         <div class="row">
+          <div class="col-2"></div>
+            <div class="col-3">
+              <h5>Top Selling Music</h5>
+              <?php
+                        
+                //Initialise Variables
+                $productIDs = array();
+                $productNames = array();
+                $productPrices = array();
+                include ('db.php');// conect to database script
+                $topSellingMusic = 
+                "
+                  SELECT product.productID, productName, retailPrice, COUNT(salestock.quantity) AS total
+                  FROM product, salestock, stock
+                  WHERE product.productID = stock.productID AND stock.stockID = salestock.stockID AND product.productType = 'music'
+                  GROUP BY productID
+                  order by total DESC
+                  lIMIT 3;
+                ";
+                $result = mysqli_query($mysql, $topSellingMusic);
+
+                // append results from query to array
+                while ($row = mysqli_fetch_array($result))
+                {
+                  array_push($productIDs, $row["productID"]);
+                  array_push($productNames, $row["productName"]);
+                  array_push($productPrices, $row["retailPrice"]);
+                }
+
+                // Echo HTML to display gallary
+                echo
+                "
+                  <div id='carouselSmall1' class='carousel slide' data-bs-ride='false'>
+                    <div class='carousel-indicators'>
+                      <button type='button' data-bs-target='#carouselSmall1' data-bs-slide-to='0' class='active' aria-current='true' aria-label='Slide 1'></button>
+                      <button type='button' data-bs-target='#carouselSmall1' data-bs-slide-to='1' aria-label='Slide 2'></button>
+                      <button type='button' data-bs-target='#carouselSmall1' data-bs-slide-to='2' aria-label='Slide 3'></button>
+                    </div>
+                    <div class='carousel-inner'>
+                      <div class='carousel-item active'>
+                        <img src='.\media\img\productImages\\$productIDs[0].jpg' class='d-block w-100' alt='picture of product' style='width:300px; height:300px;'>
+                        <div class=' d-none d-md-block bg-danger bg-opacity-50 ' >
+                          <h5 style='font-align: center;'>$productNames[0]</h5>
+                          <p style='font-align: center;'>£$productPrices[0]</p>
+                        </div>
+                      </div>
+                      <div class='carousel-item'>
+                        <img src='.\media\img\productImages\\$productIDs[1].jpg' class='d-block w-100' alt='picture of product' style='width:300px; height:300px;'>
+                        <div class=' d-none d-md-block bg-danger bg-opacity-50'>
+                          <h5 style='font-align: center;'>$productNames[1]</h5>
+                          <p style='font-align: center;'>£$productPrices[1]</p>
+                        </div>
+                      </div>
+                      <div class='carousel-item'>
+                        <img src='.\media\img\productImages\\$productIDs[2].jpg' class='d-block w-100' alt='picture of product' style='width:300px; height:300px;'>
+                        <div class=' d-none d-md-block bg-danger bg-opacity-50'>
+                          <h5 style='font-align: center;'>$productNames[2]</h5>
+                          <p style='font-align: center;'>£$productPrices[2]</p>
+                        </div>
+                      </div>
+                    </div>
+                    <button class='carousel-control-prev' type='button' data-bs-target='#carouselSmall1' data-bs-slide='prev'>
+                      <span class='carousel-control-prev-icon' aria-hidden='true'></span>
+                      <span class='visually-hidden'>Previous</span>
+                    </button>
+                    <button class='carousel-control-next' type='button' data-bs-target='#carouselSmall1' data-bs-slide='next'>
+                      <span class='carousel-control-next-icon' aria-hidden='true'></span>
+                      <span class='visually-hidden'>Next</span>
+                    </button>
+                  </div>
+                ";
+
+                mysqli_free_result($result);
+                mysqli_close($mysql);
+              ?>
+            </div>
+
+            <!-- Gallery for Most Whislisted Products -->
             <div class="col-2"></div>
-                <div class="col-3">
-                    <?php
-                        $database = "alternateTake"
-                        $topThree = array()
-                        include ('')//Put location of database connect script here
-                        $topSellingMusic = 
-                        "
-                          SELECT productName, retailPrice, COUNT(salestock.quantity) AS total
-                          FROM product, salestock, stock
-                          WHERE product.productID = stock.productID AND stock.stockID = salestock.stockID AND product.productType = "music"
-                          GROUP BY productName
-                          order by total DESC;
-                        "
-                        $result = mysqli_query($mysql, $topSellingMusic)
-
-                        // append top three results from query to array, to 2D array
-                        $counter = 0
-                        while ($row = mysqli_fetch_array($result) and $counter >=2)
-                        {
-                          array_push($topThree, $row)
-                          $counter++
-                        }
-
-                        echo
-                        "
-                        <div id='carouselSmall1' class='carousel slide' data-bs-ride='false'>
-                        <div class='carousel-indicators'>
-                          <button type='button' data-bs-target='#carouselSmall1' data-bs-slide-to='0' class='active' aria-current='true' aria-label='Slide 1'></button>
-                          <button type='button' data-bs-target='#carouselSmall1' data-bs-slide-to='1' aria-label='Slide 2'></button>
-                          <button type='button' data-bs-target='#carouselSmall1' data-bs-slide-to='2' aria-label='Slide 3'></button>
-                        </div>
-                        <div class='carousel-inner'>
-                          <div class='carousel-item active'>
-                            <img src='".$topThree[0][0].".png' class='d-block w-100' alt='picture of product'>
-                            <div class=' d-none d-md-block bg-danger bg-opacity-50 ' >
-                              <h5>".$topThree[0][0]."</h5>
-                              <p>£".$topThree[0][1]."</p>
-                            </div>
-                          </div>
-                          <div class='carousel-item'>
-                            <img src='".$topThree[1][0].".png' class='d-block w-100' alt='picture of product'>
-                            <div class=' d-none d-md-block bg-danger bg-opacity-50'>
-                            <h5>".$topThree[1][0]."</h5>
-                            <p>£".$topThree[1][1]."</p>
-                            </div>
-                          </div>
-                          <div class='carousel-item'>
-                            <img src='".$topThree[2][0].".png' class='d-block w-100' alt='picture of product'>
-                            <div class=' d-none d-md-block bg-danger bg-opacity-50'>
-                            <h5>".$topThree[2][0]."</h5>
-                            <p>£".$topThree[2][1]."</p>
-                            </div>
-                          </div>
-                        </div>
-                        <button class='carousel-control-prev' type='button' data-bs-target='#carouselSmall1' data-bs-slide='prev'>
-                          <span class='carousel-control-prev-icon' aria-hidden='true'></span>
-                          <span class='visually-hidden'>Previous</span>
-                        </button>
-                        <button class='carousel-control-next' type='button' data-bs-target='#carouselSmall1' data-bs-slide='next'>
-                          <span class='carousel-control-next-icon' aria-hidden='true'></span>
-                          <span class='visually-hidden'>Next</span>
-                        </button>
-                      </div>
-                        "
-
-                        mysqli_free_result($result)
-                        mysqli_close($mysql)
-                    ?>
-                </div>
-                <div class="col-2"></div>
-                <div class="col-3">
+              <div class="col-3">
+                <h5>Most Wish Listed Items</h5>
                 <?php
-                        echo
-                        '
-                        <div id="carouselSmall2" class="carousel slide" data-bs-ride="false">
-                        <div class="carousel-indicators">
-                          <button type="button" data-bs-target="#carouselSmall2" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                          <button type="button" data-bs-target="#carouselSmall2" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                          <button type="button" data-bs-target="#carouselSmall2" data-bs-slide-to="2" aria-label="Slide 3"></button>
+
+                  //Initialise Variables
+                  $IDs = array();
+                  $names = array();
+                  $prices = array();
+                  include ('db.php');// connect Database script
+                  $topWishListedMusic = 
+                  "
+                    SELECT product.productID, ProductName, retailPrice, COUNT(wishlistproduct.quantity) AS total
+                    FROM product, wishlistproduct
+                    WHERE wishlistproduct.productID = product.productID 
+                    GROUP BY productID
+                    ORDER BY total DESC
+                    lIMIT 3;
+                  ";
+                  $result = mysqli_query($mysql, $topWishListedMusic);
+
+                  // append results from query to arrays,
+                  while ($row = mysqli_fetch_array($result))
+                  {
+                    array_push($IDs, $row["productID"]);
+                    array_push($names, $row["ProductName"]);
+                    array_push($prices, $row["retailPrice"]);
+                  }
+
+                  echo
+                  "
+                    <div id='carouselSmall2' class='carousel slide' data-bs-ride='false'>
+                    <div class='carousel-indicators'>
+                      <button type='button' data-bs-target='#carouselSmall2' data-bs-slide-to='0' class='active' aria-current='true' aria-label='Slide 1'></button>
+                      <button type='button' data-bs-target='#carouselSmall2' data-bs-slide-to='1' aria-label='Slide 2'></button>
+                      <button type='button' data-bs-target='#carouselSmall2' data-bs-slide-to='2' aria-label='Slide 3'></button>
+                    </div>
+                    <div class='carousel-inner'>
+                      <div class='carousel-item active'>
+                        <img src='.\media\img\productImages\\$IDs[0].jpg' class='d-block w-100' alt='picture of $names[0]' style='width:300px; height:300px;'>
+                        <div class=' d-none d-md-block bg-danger bg-opacity-50 ' >
+                          <h5 style='font-align: center;'>$names[0]</h5>
+                          <p style='font-align: center;'>£$prices[0]</p>
                         </div>
-                        <div class="carousel-inner">
-                          <div class="carousel-item active">
-                            <img src="https://i.picsum.photos/id/609/600/300.jpg?hmac=ReCZwP7Cl1ArvB2Ian1R3I6LFub0xk55P1wu_-5toi8" class="d-block w-100" alt="...">
-                            <div class=" d-none d-md-block bg-danger bg-opacity-50 " >
-                              <h5>First slide label</h5>
-                              <p>Some representative placeholder content for the first slide.</p>
-                            </div>
-                          </div>
-                          <div class="carousel-item">
-                            <img src="https://i.picsum.photos/id/602/1000/500.jpg?hmac=445kr9w7gsS3vMlbXggYHC-uI6Rt-9FYMyOccPP7o0Y" class="d-block w-100" alt="...">
-                            <div class="d-none d-md-block bg-danger bg-opacity-50">
-                              <h5>Second slide label</h5>
-                              <p>Some representative placeholder content for the second slide.</p>
-                            </div>
-                          </div>
-                          <div class="carousel-item">
-                            <img src="https://i.picsum.photos/id/276/1000/500.jpg?hmac=ktb25tDHaquYFYMRE0eYeiW234D1fJ2ciCiXdCXPZ_Y" class="d-block w-100" alt="...">
-                            <div class=" d-none d-md-block bg-danger bg-opacity-50">
-                              <h5>Third slide label</h5>
-                              <p>Some representative placeholder content for the third slide.</p>
-                            </div>
-                          </div>
-                        </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselSmall2" data-bs-slide="prev">
-                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                          <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselSmall2" data-bs-slide="next">
-                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                          <span class="visually-hidden">Next</span>
-                        </button>
                       </div>
-                        '
-                    ?>
+                      <div class='carousel-item'>
+                        <img src='.\media\img\productImages\\$IDs[1].jpg' class='d-block w-100' alt='picture of $names[1]' style='width:300px; height:300px;'>
+                        <div class='d-none d-md-block bg-danger bg-opacity-50'>
+                          <h5 style='font-align: center;'>$names[1]</h5>
+                          <p style='font-align: center;'>£$prices[1]</p>
+                        </div>
+                      </div>
+                      <div class='carousel-item'>
+                        <img src='.\media\img\productImages\\$IDs[2].jpg' class='d-block w-100' alt='picture of $names[2]' style='width:300px; height:300px;'>
+                        <div class=' d-none d-md-block bg-danger bg-opacity-50'>
+                          <h5 style='font-align: center;'>$names[2]</h5>
+                          <p style='font-align: center;'>£$prices[2]</p>
+                        </div>
+                      </div>
+                    </div>
+                    <button class='carousel-control-prev' type='button' data-bs-target='#carouselSmall2' data-bs-slide='prev'>
+                      <span class='carousel-control-prev-icon' aria-hidden='true'></span>
+                      <span class='visually-hidden'>Previous</span>
+                    </button>
+                    <button class='carousel-control-next' type='button' data-bs-target='#carouselSmall2' data-bs-slide='next'>
+                      <span class='carousel-control-next-icon' aria-hidden='true'></span>
+                      <span class='visually-hidden'>Next</span>
+                    </button>
+                  </div>
+                  ";
+                ?>
                 </div>
                 <div class="col-2"></div>
+              </div>
             </div>
-        </div>
-        
-        <div class="row">
-            <div class="footer col-12 text-center">
-                <p>Created by: </p>
-                <p class="footer-copyrright">&copy; Caitlin Ridge-Sykes, Daniel Ferrier, Euan West, Kamil Krauze, Toms Popdjakuniks, Vera Borvinski</p>
-            </div>
+
+      <div class="row">
+        <div class="footer col-12 text-center">
+          <p>Created by: </p>
+          <p class="footer-copyrright">&copy; Caitlin Ridge-Sykes, Daniel Ferrier, Euan West, Kamil Krauze, Toms Popdjakuniks, Vera Borvinski</p>
         </div>
     </div>
+  </div>
 </body>
 
 </html>
