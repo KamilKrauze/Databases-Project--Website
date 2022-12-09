@@ -115,6 +115,7 @@
                         <div class="modal-body modal-dialog-scrollable">
                             <?php
                             include 'db.php';
+                            error_reporting (E_ALL ^ E_NOTICE);
 
                             //Function On Button Click
                             if (isset($_POST['saveChanges'])) {
@@ -125,17 +126,28 @@
                                 //points variable is set to contents of $_POST["points"]
                                 $points = $_POST["points"];
 
-                                //If Points is 0 then sometimes is NULL
-                                //Set NULL to 0 in the case of points
-                                if ($points == NULL) {
-                                    $points = 0;
+                                //If any of the contents of  the form is empty then reject, as to not add incorrect data to the database.
+                                if (empty($_POST["firstName"]) || empty($_POST["lastName"]) || empty($_POST["addr"]) || empty($_POST["postCode"]) || empty($_POST["phoneNo"]) || empty($_POST["email"])) {
+                                    //Alerts the user that one of the fields is empty
+                                    echo '<script>alert("Please ensure all the fields are filled.")</script>';
+
                                 }
 
-                                //binds parameters
-                                $statement->bind_param('ssssssi', $_POST["firstName"], $_POST["lastName"], $_POST["addr"], $_POST["postCode"], $_POST["phoneNo"], $_POST["email"], $points);
+                                else {
+                                    
+                                    //If Points is 0 then sometimes is NULL
+                                    //Set NULL to 0 in the case of points
+                                    if ($points == NULL) {
+                                        $points = 0;
+                                    }
 
-                                //Executes Query
-                                $statement->execute();
+                                    //binds parameters
+                                    $statement->bind_param('ssssssi', $_POST["firstName"], $_POST["lastName"], $_POST["addr"], $_POST["postCode"], $_POST["phoneNo"], $_POST["email"], $points);
+
+                                    //Executes Query
+                                    $statement->execute();
+
+                                }
                             }
 
                             //Selects all details for customerNo 5
@@ -154,31 +166,32 @@
 
                                     echo '<form method="post">
                                             <p>Member Forename: 
-                                                <input type="text" name="firstName" value=' . $row["firstName"] . ' placeholder="E.g Callum">
+                                                <input type="text" min="1" max="255" name="firstName" value="' . $row["firstName"] . '" placeholder="E.g Callum">
                                             </p>
 
                                             <p>Member Surname: 
-                                                <input type="text" name="lastName" value=' . $row["lastName"] . ' placeholder="E.g Scott">
+                                                <input type="text" min="1" max="255" name="lastName" value="' . $row["lastName"] . '" placeholder="E.g Scott">
                                             </p>
 
                                             <p>Member Address: 
-                                                <input type="text" name="addr" value=' . $row["addr"] . ' placeholder="E.g 65-67 Salamander Street, Leith, Edinburgh, Scotland">
+                                                <input type="text" name="addr" min="1" max="255" value="' . $row["addr"] . '" placeholder="E.g 65-67 Salamander Street, Leith, Edinburgh, Scotland">
                                             </p>
 
                                             <p>Address Postcode: 
-                                                <input type="text" name="postCode" value=' . $row["postCode"] . ' placeholder="E.g EH6 7JZ">
+                                                <input type="text" min="1" max="10" name="postCode" value="' . $row["postCode"] . '" placeholder="E.g EH6 7JZ">
                                             </p>
 
                                             <p>Phone Number: 
-                                                <input type="tel" name="phoneNo" value=' . $row["phoneNo"] . ' placeholder="E.g 01224733925">
+                                                <input type="tel" name="phoneNo" value="' . $row["phoneNo"] . '" placeholder="E.g 01224733925">
                                             </p>
 
                                             <p>Email Address: 
-                                                <input type="email" name="email" value=' . $row["email"] . ' placeholder="2423178@altTake.co.uk">
+                                                <input type="email" min="1" max="50" name="email" value="' . $row["email"] . '" placeholder="2423178@altTake.co.uk">
                                             </p>
                                             
                                             <p>Number of Points: 
-                                                <input type="number" disabled name="points" value=' . $row["points"] . '>
+                                                <input type="number" disabled name="points" value=
+                                                "' . $row["points"] . '">
                                             </p>
                                             
                                             <div class="modal-footer">
@@ -245,7 +258,7 @@
                                         <div class='card card-body'>";
 
 
-                        //Temp varaible to contain a copy of the current records
+                        //Temp variable to contain a copy of the current records
                         $wItem = $row;
 
                         //While $wItem's[wishlistID] is the same as the currentWishlist
