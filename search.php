@@ -27,7 +27,7 @@
 <header>
     <div class="row align-items-start" style="margin-right: 0px">
         <div class="col-3">
-            <a href="#"><img src="./media/img/image.png" alt="Alternate Take company banner" class="img-fluid"></a>
+            <a href="index.php"><img src="./media/img/image.png" alt="Alternate Take company banner" class="img-fluid"></a>
         </div>
         <div class="col-6 align-self-center text-center">
             <h1>ALTERNATE TAKE</h1>
