@@ -59,7 +59,7 @@ function addItemToBasket(button) {
                 $('#basket-list').append(`
                 <li class="list-group-item" id="basket-item-${itemID}">
                     ${json.name}
-                    <input type="number" min="1" onchange="updateTotalCost(this)" style="width:50px" id="quantityID-${itemID}" aria-label="${itemID}" value="1">
+                    <input class="quantity-input" type="number" min="1" onkeypress="return event.keyCode != 13;" onchange="updateTotalCost(this)" style="width:50px" id="quantityID-${itemID}" aria-label="${itemID}" value="1">
                     <button onclick="removeItemFromBasket(this)" aria-label="${itemID}" id="btn-remove-item" class="btn" type="button">
                         X
                     </button>

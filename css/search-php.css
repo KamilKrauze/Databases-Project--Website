@@ -1,5 +1,5 @@
 #btn-basket {
-    color: white;
+    color: #000000;
     background-color: #00a72d00;
     border: 2px;
     border-color: rgb(0, 213, 64);
@@ -11,7 +11,7 @@
 #btn-basket:focus,
 #btn-basket:active    {
     background-color: #8D021F;
-    color: #ffffff;
+    color: #000000;
     border-color: #8D021F;
 }
 

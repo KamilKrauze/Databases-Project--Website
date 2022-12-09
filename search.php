@@ -62,7 +62,41 @@
                     </li>
                 </ul>
                 <form class="d-flex">
-                    <button name="login_btn" class="btn btn-light" type="button" onclick="sendToLogin(this)" aria-label="template.php">Login</button>
+                
+                    <div class="search-query col-xs-12 col-md-auto d-flex flex-row-reverse">
+                        <button id="btn-basket" class="btn" type="button" aria-label="basket" data-bs-toggle="modal" data-bs-target="#modal_checkout">
+                            Basket
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="modal_checkout" tabindex="-1" aria-labelledby="checkout-modal-label" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="checkout-modal-label">Checkout</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div id="checkout-modal-body row" class="modal-body" style="height:450px; overflow-y:scroll;">
+                                        <p class="placeholder-text">*cricket noises*</p>
+                                        <p class="placeholder-text">No items added</p>
+                                        <ul id="basket-list" class="list-group input-group">
+                                            <!-- JS script adds here.... -->
+                                        </ul>
+                                    </div>
+                                    <div id="modal-total-price" style="margin-left:1.5%;">
+                                        <p id="total-price"><b>Total</b>: £ 0.00</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" onclick="checkOutBasket(this)" id="btn-checkout" class="btn btn-primary">Checkout</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button name="login_btn" class="btn btn-light" type="button" onclick="sendToLogin(this)" aria-label="template.php">Login</button>
+                    
+                    </div>
                 </form>
             </div>
         </div>
@@ -79,9 +113,11 @@
                 <!-- Search Bar -->
                 <div class="search-query col-xs-12 col-md-3">
                     <form  id="searchbar" class="search bar d-flex" role="search" action="<?php echo $_SERVER["PHP_SELF"];?>" method="post">
-                        <input name="search" class="form-control" type="text" placeholder="Search" aria-label="Search">
+                        <input name="search" onkeypress="printKey(this)" class="form-control" type="text" placeholder="Search" aria-label="Search">
                     </form>
                 </div>
+
+                <script type="text/javascript" src="./scripts/search.js"></script>
 
                 <?php
 
@@ -166,46 +202,13 @@
                         </ul>
                     </div>
                 </div>
-
-                <div class="search-query col-xs-12 col-md-auto d-flex flex-row-reverse">
-                    <button id="btn-basket" class="btn" type="button" aria-label="basket" data-bs-toggle="modal" data-bs-target="#modal_checkout">
-                        Basket
-                    </button>
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="modal_checkout" tabindex="-1" aria-labelledby="checkout-modal-label" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="checkout-modal-label">Checkout</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div id="checkout-modal-body row" class="modal-body" style="height:450px; overflow-y:scroll;">
-                                    <p class="placeholder-text">*cricket noises*</p>
-                                    <p class="placeholder-text">No items added</p>
-                                    <ul id="basket-list" class="list-group input-group">
-                                        <!-- JS script adds here.... -->
-                                    </ul>
-                                </div>
-                                <div id="modal-total-price" style="margin-left:1.5%;">
-                                    <p id="total-price"><b>Total</b>: £ 0.00</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" onclick="checkOutBasket(this)" id="btn-checkout" class="btn btn-primary">Checkout</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
             </div>
         </div>
 
         <!--Example content to get an idea what this could contain and how it displays-->
         <!--Add cards probably for displaying v_products in the search page-->
         <div class="contents text-center row" style="height: 85vh; overflow-y: scroll;">
-            <div class="row">
+            <div id="card-list" class="row">
                 <?php
                 $productName = "%" .$search. "%";
                 //$extra_query = "speak%";
