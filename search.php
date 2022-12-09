@@ -68,6 +68,39 @@
                     </div>
                 </form>
 
+                <form class="d-flex">
+                
+                      <button id="btn-basket" class="btn" type="button" aria-label="basket" data-bs-toggle="modal" data-bs-target="#modal_checkout">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 588 524"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M253.3 35.1c6.1-11.8 1.5-26.3-10.2-32.4s-26.3-1.5-32.4 10.2L117.6 192H32c-17.7 0-32 14.3-32 32s14.3 32 32 32L83.9 463.5C91 492 116.6 512 146 512H430c29.4 0 55-20 62.1-48.5L544 256c17.7 0 32-14.3 32-32s-14.3-32-32-32H458.4L365.3 12.9C359.2 1.2 344.7-3.4 332.9 2.7s-16.3 20.6-10.2 32.4L404.3 192H171.7L253.3 35.1zM192 304v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V304c0-8.8 7.2-16 16-16s16 7.2 16 16zm96-16c8.8 0 16 7.2 16 16v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V304c0-8.8 7.2-16 16-16zm128 16v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V304c0-8.8 7.2-16 16-16s16 7.2 16 16z"/></svg>
+                      </button>
+
+                      <!-- Modal -->
+                      <div class="modal fade" id="modal_checkout" tabindex="-1" aria-labelledby="checkout-modal-label" aria-hidden="true">
+                          <div class="modal-dialog">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <h1 class="modal-title fs-5" id="checkout-modal-label">Checkout</h1>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div id="checkout-modal-body row" class="modal-body" style="height:450px; overflow-y:scroll;">
+                                      <p class="placeholder-text">*cricket noises*</p>
+                                      <p class="placeholder-text">No items added</p>
+                                      <ul id="basket-list" class="list-group input-group">
+                                          <!-- JS script adds here.... -->
+                                      </ul>
+                                  </div>
+                                  <div id="modal-total-price" style="margin-left:1.5%;">
+                                      <p id="total-price"><b>Total</b>: £ 0.00</p>
+                                  </div>
+                                  <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                      <button type="button" onclick="checkOutBasket(this)" id="btn-checkout" class="btn btn-primary">Checkout</button>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </form>
+
             </div>
         </div>
     </nav>
@@ -88,7 +121,7 @@
                 </div>
 
                 <?php
-
+                // Get user search query from search bar - from $_POST to $_REQUEST
                 $search = "";
                     if (isset($_REQUEST['search'])) {
                         if ($_REQUEST['search'] != "") {
@@ -196,15 +229,15 @@
 
                     // Print bootstrap cards in container
                     echo'
-                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-2">
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2">
                             <!-- Card -->
-                            <div class="card my-2" style="height:45vh;">
+                            <div class="card my-2">
                                 <img class="img-fluid card-img-top" src="./media/img/productImages/'.$productID.'.jpg" alt="Card image cap">
                                 <div class="card-body">
                                     <h5 class="card-title">'.$productName.'</h5>
                                 </div>
                                 <div class="card-footer">
-                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                    <div class="" role="group" aria-label="Basic example">
                                         <button onclick="addItemToBasket(this)" aria-label="'.$productID.'" type="button" class="btn btn-secondary">Add</button>
                                         <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalProduct'.$productID.'">
                                         View
