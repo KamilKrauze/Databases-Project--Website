@@ -72,6 +72,14 @@ div .footer {
     border-style: solid;
 }
 
+/**Extra Styling **/
+
+.blackBarDivider {
+    border-top-width: 2.5px;
+    border-top-color: #5E1914;
+    border-top-style: solid;
+}
+
 /**
     BOOTSTRAP OVERRIDES
 */
