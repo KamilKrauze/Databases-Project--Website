@@ -46,58 +46,28 @@
             
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link active" aria-current="page" href="index.php">Home</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item mx-2">
                         <a class="nav-link" href="#">Shop</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item mx-2">
                         <a class="nav-link" href="#">Stores</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item mx-2">
                         <a class="nav-link" href="#" role="button" aria-expanded="false">
                         About Us
                         </a>
                     </li>
                 </ul>
-                <form class="d-flex">
                 
-                    <div class="search-query col-xs-12 col-md-auto d-flex flex-row-reverse">
-                        <button id="btn-basket" class="btn" type="button" aria-label="basket" data-bs-toggle="modal" data-bs-target="#modal_checkout">
-                            Basket
-                        </button>
-
-                        <!-- Modal -->
-                        <div class="modal fade" id="modal_checkout" tabindex="-1" aria-labelledby="checkout-modal-label" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="checkout-modal-label">Checkout</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div id="checkout-modal-body row" class="modal-body" style="height:450px; overflow-y:scroll;">
-                                        <p class="placeholder-text">*cricket noises*</p>
-                                        <p class="placeholder-text">No items added</p>
-                                        <ul id="basket-list" class="list-group input-group">
-                                            <!-- JS script adds here.... -->
-                                        </ul>
-                                    </div>
-                                    <div id="modal-total-price" style="margin-left:1.5%;">
-                                        <p id="total-price"><b>Total</b>: £ 0.00</p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" onclick="checkOutBasket(this)" id="btn-checkout" class="btn btn-primary">Checkout</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <button name="login_btn" class="btn btn-light" type="button" onclick="sendToLogin(this)" aria-label="template.php">Login</button>
-                    
+                <form class="d-flex">
+                    <div class="col-xs-12 col-md-auto d-flex flex-row-reverse mx-md-5">
+                        <button name="login_btn" class="btn btn-light" type="button" aria-label="Login button" href="login.php">Login</button>
                     </div>
                 </form>
+
             </div>
         </div>
     </nav>
@@ -116,8 +86,6 @@
                         <input name="search" onkeypress="printKey(this)" class="form-control" type="text" placeholder="Search" aria-label="Search">
                     </form>
                 </div>
-
-                <script type="text/javascript" src="./scripts/search.js"></script>
 
                 <?php
 
