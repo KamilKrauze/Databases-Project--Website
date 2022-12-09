@@ -1,4 +1,13 @@
 <!DOCTYPE html>
+
+<?php
+session_start(); // Start session
+if(isset($_SESSION['cart']) == false && isset($_SESSION['quantites']) == false) {
+    $_SESSION['cart'] = array();
+    $_SESSION['quantites'] = array();
+}
+?>
+
 <html lang="en">
 
 <head>

@@ -2,6 +2,17 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<?php
+session_start(); // Start session
+
+if(isset($_SESSION['username']) == false && isset($_SESSION['firstname']) == false & isset($_SESSION['lastname']) == false) {
+  $_SESSION['username'] = "";
+  $_SESSION['firstname'] = "";
+  $_SESSION['lastname'] = "";
+}
+
+?>
+
 <head>
     <meta charset="UTF-8">
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +31,7 @@
 <header>
     <div class="row align-items-start" style="margin-right: 0px">
         <div class="col-3">
-            <a href="#"><img src="./media/img/image.png" alt="Alternate Take company banner" class="img-fluid"></a>
+            <a href="index.php"><img src="./media/img/image.png" alt="Alternate Take company banner" class="img-fluid"></a>
         </div>
         <div class="col-6 align-self-center text-center">
             <h1>ALTERNATE TAKE</h1>

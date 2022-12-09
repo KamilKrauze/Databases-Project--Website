@@ -3,6 +3,13 @@ var basketItemPrice = [];
 var basketItemQuantity = [];
 var totalPrice = 0.0;
 
+function reloadSession() {
+    $.post("./php-for-js/reloadItemsToBasket.php",
+    (response) => {
+        
+    });
+}
+
 // Update total cost on value change of input box
 function updateTotalCost(element) {
     if ((basket.length > 0) && (basketItemPrice.length > 0) && (basketItemQuantity.length > 0))
@@ -59,17 +66,24 @@ function addItemToBasket(button) {
                 $('.placeholder-text').remove();
                 $('#total-price').remove();
                 $('#modal-total-price').append(`<p id="total-price"><b>Total</b>: £ ${totalPrice.toFixed(2)} </p>`);
+
+                // Post to add items to cart session SUPERVAR
+                $.post("./php-for-js/addToCartSession.php", 
+                {itemID: itemID}, (response) => {
+                    console.log(`Cart session - ${response}`)
+                });
             }
             
-            console.log("Items in basket: ");
-            for (let i=0; i<basket.length; i++) {
-                console.log(basket[i]);
-            }
+            // ----Debug Line-----
+            // console.log("Items in basket: ");
+            // for (let i=0; i<basket.length; i++) {
+            //     console.log(basket[i]);
+            // }
         }
     );
 }
 
-// Remove
+// Remove item from basket
 function removeItemFromBasket(button) {
 
     if (button.id != "btn-remove-item") { return; }
@@ -94,6 +108,11 @@ function removeItemFromBasket(button) {
             $(`#basket-item-${itemID}`).remove();
             $('#total-price').remove();
             $('#modal-total-price').append(`<p id="total-price"><b>Total</b>: £ ${totalPrice.toFixed(2)} </p>`);
+
+            $.post("./php-for-js/removeFromCartSession.php", 
+            {itemID: itemID}, (response) => {
+                console.log(`Items remaining - ${response}`)
+            });
         }
     }  
 }
