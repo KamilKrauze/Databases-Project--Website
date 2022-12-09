@@ -3,6 +3,36 @@ var basketItemPrice = [];
 var basketItemQuantity = [];
 var totalPrice = 0.0;
 
+function reloadSession() {
+    $.post("./php-for-js/reloadItemsToBasket.php",
+    (response) => {
+        var json = $.parseJSON(response);
+
+        for (i=0; i<json.length; i++) {
+
+            $('#basket-list').append(`
+            <li class="list-group-item" id="basket-item-${json[i].id}">
+                ${json[i].name}
+                <input class="quantity-input" type="number" min="1" onkeypress="return event.keyCode != 13;" onchange="updateTotalCost(this)" style="width:50px" id="quantityID-${json[i].id}" aria-label="${json[i].id}" value="${json[i].quantity}">
+                <button onclick="removeItemFromBasket(this)" aria-label="${json[i].id}" id="btn-remove-item" class="btn" type="button">
+                    X
+                </button>
+            </li>
+            `);
+
+            basket.push(parseInt(json[i].id));
+            basketItemPrice.push(parseFloat(json[i].price));
+            basketItemQuantity.push(parseInt(json[i].quantity));
+        }
+
+        reCalculateTotalPrice();
+            
+        $('.placeholder-text').remove();
+        $('#total-price').remove();
+        $('#modal-total-price').append(`<p id="total-price"><b>Total</b>: £ ${totalPrice.toFixed(2)} </p>`);
+    });
+}
+
 // Update total cost on value change of input box
 function updateTotalCost(element) {
     if ((basket.length > 0) && (basketItemPrice.length > 0) && (basketItemQuantity.length > 0))
@@ -155,34 +185,4 @@ function checkOutBasket(button) {
             }
         });
     }
-}
-
-function reloadSession() {
-    $.post("./php-for-js/reloadItemsToBasket.php",
-    (response) => {
-        var json = $.parseJSON(response);
-
-        for (i=0; i<json.length; i++) {
-
-            $('#basket-list').append(`
-            <li class="list-group-item" id="basket-item-${json[i].id}">
-                ${json[i].name}
-                <input class="quantity-input" type="number" min="1" onkeypress="return event.keyCode != 13;" onchange="updateTotalCost(this)" style="width:50px" id="quantityID-${json[i].id}" aria-label="${json[i].id}" value="${json[i].quantity}">
-                <button onclick="removeItemFromBasket(this)" aria-label="${json[i].id}" id="btn-remove-item" class="btn" type="button">
-                    X
-                </button>
-            </li>
-            `);
-
-            basket.push(parseInt(json[i].id));
-            basketItemPrice.push(parseFloat(json[i].price));
-            basketItemQuantity.push(parseInt(json[i].quantity));
-        }
-
-        reCalculateTotalPrice();
-            
-        $('.placeholder-text').remove();
-        $('#total-price').remove();
-        $('#modal-total-price').append(`<p id="total-price"><b>Total</b>: £ ${totalPrice.toFixed(2)} </p>`);
-    });
 }
