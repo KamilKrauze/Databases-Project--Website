@@ -18,16 +18,6 @@ function updateTotalCost(element) {
     }
 }
 
-// Send to page
-function sentToPage(element) {
-
-    let page = element.ariaLabel;
-    console.log("Sending to template.php");
-    let webUrl = "https://zeno.computing.dundee.ac.uk/2022-ac32006/kamilkrauze/Databases-Project--Website/";
-    window.location.replace(`${webUrl}${page}`);
-    console.log("Sent succesfully");
-}
-
 // Recalculate total price
 function reCalculateTotalPrice() {
     totalPrice = 0.0;
