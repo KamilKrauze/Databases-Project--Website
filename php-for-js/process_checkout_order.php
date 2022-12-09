@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 include '../db.php';
 
 if (isset($_POST['totalCost']) && isset($_POST['productQuantity']) && isset($_POST['productID'])) {
@@ -131,6 +133,11 @@ if (isset($_POST['totalCost']) && isset($_POST['productQuantity']) && isset($_PO
             $stmt7->bind_param("iii",$temp_stockIDs_list[$i], $saleID, $sold_stock_amount[$i]);
             $stmt7->execute();
         }
+
+        $_SESSION['cart'] = array();
+        $_SESSION['quantites'] = array();
+        $_SESSION['prices'] = array();
+
         echo "SUCCESS";
     }
     else {

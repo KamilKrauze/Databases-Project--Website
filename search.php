@@ -5,6 +5,7 @@ session_start(); // Start session
 if(isset($_SESSION['cart']) == false && isset($_SESSION['quantites']) == false) {
     $_SESSION['cart'] = array();
     $_SESSION['quantites'] = array();
+    $_SESSION['prices'] = array();
 }
 ?>
 
@@ -356,6 +357,7 @@ if(isset($_SESSION['cart']) == false && isset($_SESSION['quantites']) == false) 
 
     <!-- Custom scripts -->
     <script src="./scripts/button.js"></script>
+    <script type="text/javascript">reloadSession();</script>
 </body>
 
 </html>
