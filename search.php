@@ -231,7 +231,7 @@
                         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-2">
                             <!-- Card -->
                             <div class="card my-2" style="height:45vh;">
-                                <img class="img-fluid card-img-top" src="https://picsum.photos/512/512" alt="Card image cap">
+                                <img class="img-fluid card-img-top" src="./media/img/productImages/'.$productID.'.jpg" alt="Card image cap">
                                 <div class="card-body">
                                     <h5 class="card-title">'.$productName.'</h5>
                                 </div>
@@ -254,7 +254,7 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <img class="img-fluid" src="https://picsum.photos/512/512" alt="Card image cap">
+                                            <img class="img-fluid" src="./media/img/productImages/'.$productID.'.jpg" alt="Card image cap">
                                             <div class="container">
                                                 <div class="row">
                                                 ';
