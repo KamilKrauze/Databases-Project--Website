@@ -1,0 +1,20 @@
+CREATE TABLE `staff` (
+  `staffNo` int(11) NOT NULL AUTO_INCREMENT,
+  `storeNo` int(11) DEFAULT NULL,
+  `position` varchar(255) NOT NULL,
+  `contractType` varchar(255) NOT NULL,
+  `title` varchar(10) DEFAULT NULL,
+  `firstName` varchar(255) NOT NULL,
+  `lastName` varchar(255) NOT NULL,
+  `hourlyPay` double DEFAULT NULL,
+  `addr` varchar(255) NOT NULL,
+  `postcode` varchar(255) DEFAULT NULL,
+  `phoneNo` varchar(11) NOT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `username` varchar(30) DEFAULT NULL,
+  `pass` varchar(64) DEFAULT NULL,
+  PRIMARY KEY (`staffNo`),
+  UNIQUE KEY `staffNo` (`staffNo`),
+  KEY `storeNo` (`storeNo`),
+  CONSTRAINT `staff_ibfk_1` FOREIGN KEY (`storeNo`) REFERENCES `store` (`storeNo`)
+);
