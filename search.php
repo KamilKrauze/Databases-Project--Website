@@ -1,3 +1,17 @@
+<?php
+session_start(); // Start session with server
+
+// Check if session super variables have been set
+// If all are not set     -->     Initialize with empty arrays.
+if(isset($_SESSION['cart']) == false && isset($_SESSION['quantites']) == false) {
+    $_SESSION['cart'] = array();
+    $_SESSION['quantites'] = array();
+    $_SESSION['prices'] = array();
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -347,7 +361,7 @@
     </div>
 
     <!-- Custom scripts -->
-    <script src="./scripts/button.js"></script>
+    <script src="./scripts/button.js"> reloadSession(); // Reload session variable data to JS variables. </script>
 </body>
 
 </html>

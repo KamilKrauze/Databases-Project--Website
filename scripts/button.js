@@ -3,6 +3,11 @@ var basketItemPrice = [];
 var basketItemQuantity = [];
 var totalPrice = 0.0;
 
+// Reload sessions to JS arrays
+function reloadSession() {
+    
+}
+
 // Update total cost on value change of input box
 function updateTotalCost(element) {
     if ((basket.length > 0) && (basketItemPrice.length > 0) && (basketItemQuantity.length > 0))
@@ -59,12 +64,23 @@ function addItemToBasket(button) {
                 $('.placeholder-text').remove();
                 $('#total-price').remove();
                 $('#modal-total-price').append(`<p id="total-price"><b>Total</b>: £ ${totalPrice.toFixed(2)} </p>`);
+
+                $.post("./php-for-js/addToSessionVariables.php", 
+                {
+                    itemID: itemID,
+                    quantity: 1,
+                    itemPrice: json.price
+                },
+                (response) => {
+                    console.log(`Added to session vars - ${response}`);
+                });
             }
             
-            console.log("Items in basket: ");
-            for (let i=0; i<basket.length; i++) {
-                console.log(basket[i]);
-            }
+            // --- DEBUG LOG ----
+            // console.log("Items in basket: ");
+            // for (let i=0; i<basket.length; i++) {
+            //     console.log(basket[i]);
+            // }
         }
     );
 }
@@ -94,8 +110,13 @@ function removeItemFromBasket(button) {
             $(`#basket-item-${itemID}`).remove();
             $('#total-price').remove();
             $('#modal-total-price').append(`<p id="total-price"><b>Total</b>: £ ${totalPrice.toFixed(2)} </p>`);
+
+            $.post("./php-for-js/removeFromSessionVariables.php",
+            {itemID: itemID}, (response) => {
+                console.log(`Items remaining\n - ${response}`);
+            });
         }
-    }  
+    }
 }
 
 // Realistically there would be card payment method but for demonstration it auto processes
@@ -128,7 +149,7 @@ function checkOutBasket(button) {
                 $("#checkout-modal-body").append('<p class="placeholder-text">*cricket noises*</p>');
                 $("#checkout-modal-body").append('<p class="placeholder-text">No items added</p>');
             }
-            else if (return_result = "NOT_ENOUGH_STOCK_AVAILABLE") {
+            else if (return_result == "NOT_ENOUGH_STOCK_AVAILABLE") {
                 window.alert("Not enough stock is available");
             }
             else {
