@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 include '../db.php';
 
 if (isset($_POST['totalCost']) && isset($_POST['productQuantity']) && isset($_POST['productID'])) {
@@ -142,4 +144,6 @@ if (isset($_POST['totalCost']) && isset($_POST['productQuantity']) && isset($_PO
 else {
 echo "COMPLETE_FAILURE";
 }
+
+session_destroy();
 ?>
