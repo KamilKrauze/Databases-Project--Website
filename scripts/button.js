@@ -3,38 +3,84 @@ var basketItemPrice = [];
 var basketItemQuantity = [];
 var totalPrice = 0.0;
 
-// Reload sessions to JS arrays
-function reloadSession() {
-    
-}
-
-// Update total cost on value change of input box
-function updateTotalCost(element) {
-    if ((basket.length > 0) && (basketItemPrice.length > 0) && (basketItemQuantity.length > 0))
-    {
-        const index = basket.indexOf(element.ariaLabel);
-        console.log(`Input ID ->: ${element.ariaLabel}`);
-        basketItemQuantity[index] = element.value;
-
-        reCalculateTotalPrice();
-
-        $('#total-price').remove();
-        $('#modal-total-price').append(`<p id="total-price"><b>Total</b>: £ ${totalPrice.toFixed(2)} </p>`);
-    }
-}
-
 // Recalculate total price
 function reCalculateTotalPrice() {
     totalPrice = 0.0;
     for (let i=0; i<basketItemPrice.length; i++) {
-        totalPrice += (basketItemPrice[i] * basketItemQuantity[i]);
+        totalPrice = totalPrice + (basketItemPrice[i] * basketItemQuantity[i]);
     }
+}
+
+// Run function on page reload
+// Source: https://stackoverflow.com/questions/41904975/refresh-page-and-run-function-after-javascript
+// Date Accessed - 11/12/2022
+
+
+// Reload sessions to JS arrays
+function reloadSession() {
+    $.post("./php-for-js/reloadItemsToBasket.php",
+    function (response) {
+        if (response != "EMPTY_BASKET") {
+
+            var json = $.parseJSON(response);
+
+            for (i = 0; i < json.length; i++) {
+                $('#basket-list').append(`
+                <li class="list-group-item" id="basket-item-${json[i].id}">
+                    ${json[i].name}
+                    <input class="quantity-input" type="number" min="1" onkeypress="return event.keyCode != 13;" onchange="updateTotalCost(this)" style="width:50px" id="quantityID-${json[i].id}" aria-label="${json[i].id}" value="${json[i].quantity}">
+                    <button onclick="removeItemFromBasket(this)" aria-label="${json[i].id}" id="btn-remove-item" class="btn" type="button">
+                        X
+                    </button>
+                </li>
+            `);
+
+                basket.push(json[i].id);
+                basketItemPrice.push(parseFloat(json[i].cost));
+                basketItemQuantity.push(json[i].quantity);
+            }
+
+            reCalculateTotalPrice();
+
+            $('.placeholder-text').remove();
+            $('#total-price').remove();
+            $('#modal-total-price').append(`<p id="total-price"><b>Total</b>: £ ${totalPrice.toFixed(2)} </p>`);
+        }
+        });
+
+    // console.log("Session reload complete.");
+    return;
+}
+
+// Update total cost on value change of input box
+function updateTotalCost(element) {
+
+    quantity = element.value;
+
+    // console.log(element.ariaLabel);
+
+    if ((basket.length > 0) && (basketItemPrice.length > 0) && (basketItemQuantity.length > 0))
+    {
+        const index = basket.indexOf(element.ariaLabel);
+        basketItemQuantity[index] = quantity;
+
+        $.post(
+        "./php-for-js/updateQuantityInSessionVar.php", {
+        itemID: element.ariaLabel,
+        quantity: quantity}
+        );
+    }
+
+    reCalculateTotalPrice();
+
+    $('#total-price').remove();
+    $('#modal-total-price').append(`<p id="total-price"><b>Total</b>: £ ${totalPrice.toFixed(2)} </p>`);
 }
 
 // Add item to basket and recalculate total price
 function addItemToBasket(button) {
     let itemID = button.ariaLabel;
-
+    // console.log(itemID);
     $.post("./php-for-js/get_item_from_v-products.php",
     {itemID: itemID},
         (response) => {
@@ -43,7 +89,6 @@ function addItemToBasket(button) {
             // Data Accessed: 08/12/2022 - 09:00AM
             
             var json = $.parseJSON(response);
-            console.log(`Item: ${json.name}\nPrice: ${json.price}`);
             if(!basket.includes(itemID)) {
                 basket.push(itemID);
                 basketItemPrice.push(parseFloat(json.price));
@@ -70,53 +115,45 @@ function addItemToBasket(button) {
                     itemID: itemID,
                     quantity: 1,
                     itemPrice: json.price
-                },
-                (response) => {
-                    console.log(`Added to session vars - ${response}`);
                 });
             }
-            
-            // --- DEBUG LOG ----
-            // console.log("Items in basket: ");
-            // for (let i=0; i<basket.length; i++) {
-            //     console.log(basket[i]);
-            // }
-        }
-    );
+        });
 }
 
 // Remove
 function removeItemFromBasket(button) {
 
     if (button.id != "btn-remove-item") { return; }
-    
+    if (basket.length == 0) {return;}
+
     let itemID = button.ariaLabel;
-    console.log(itemID);
-    if (basket.length > 0) {
-        const index = basket.indexOf(itemID);
-        console.log(index);
+
+    if (basket.length == 1) {
+        var index = 1;
+        basket = [];
+        basketItemPrice = [];
+        basketItemQuantity = [];
+    }
+    else
+    {
+        var index = basket.indexOf(itemID);
+
         if (index > -1) {
             basket.splice(index,1);
             basketItemPrice.splice(index,1);
             basketItemQuantity.splice(index,1);
-
-            reCalculateTotalPrice();
-            
-            console.log("Items in basket: ");
-            for (let i=0; i<basket.length; i++) {
-                console.log(basket[i]);
-            }
-
-            $(`#basket-item-${itemID}`).remove();
-            $('#total-price').remove();
-            $('#modal-total-price').append(`<p id="total-price"><b>Total</b>: £ ${totalPrice.toFixed(2)} </p>`);
-
-            $.post("./php-for-js/removeFromSessionVariables.php",
-            {itemID: itemID}, (response) => {
-                console.log(`Items remaining\n - ${response}`);
-            });
         }
     }
+
+    $.post("./php-for-js/removeFromSessionVariables.php",
+    {itemID: itemID});
+
+    reCalculateTotalPrice();
+
+    $(`#basket-item-${itemID}`).remove();
+    $('#total-price').remove();
+    $('#modal-total-price').append(`<p id="total-price"><b>Total</b>: £ ${totalPrice.toFixed(2)} </p>`);
+
 }
 
 // Realistically there would be card payment method but for demonstration it auto processes
@@ -151,9 +188,6 @@ function checkOutBasket(button) {
             }
             else if (return_result == "NOT_ENOUGH_STOCK_AVAILABLE") {
                 window.alert("Not enough stock is available");
-            }
-            else {
-                console.log(response);
             }
         });
     }

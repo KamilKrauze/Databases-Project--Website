@@ -11,7 +11,7 @@ if (isset($_POST['itemID'])) {
 
     // Push data to respective session arrays.
     array_push($_SESSION['cart'], $itemID);
-    array_push($_SESSION['quantites'], $quantity);
+    array_push($_SESSION['quantities'], $quantity);
     array_push($_SESSION['prices'], $price);
 
     // Debug echo

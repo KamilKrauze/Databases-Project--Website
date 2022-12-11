@@ -5,10 +5,11 @@ session_start(); // Start session with server
 // If all are not set     -->     Initialize with empty arrays.
 if(isset($_SESSION['cart']) == false && isset($_SESSION['quantites']) == false) {
     $_SESSION['cart'] = array();
-    $_SESSION['quantites'] = array();
+    $_SESSION['quantities'] = array();
     $_SESSION['prices'] = array();
 }
 
+// session_destroy();
 ?>
 
 
@@ -27,6 +28,8 @@ if(isset($_SESSION['cart']) == false && isset($_SESSION['quantites']) == false) 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
     
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <!-- <script type="text/javascript" src="./scripts/button.js">randomEcho();</script> -->
+
     <?php
         include 'db.php';
     ?>
@@ -50,7 +53,7 @@ if(isset($_SESSION['cart']) == false && isset($_SESSION['quantites']) == false) 
     </div>
 </header>
 
-<body>
+<body onload=reloadSession()>
     <!--NAV BAR-->
     <nav class="navbar navbar-expand-lg bg-light">
         <div class="container-fluid">
@@ -130,7 +133,7 @@ if(isset($_SESSION['cart']) == false && isset($_SESSION['quantites']) == false) 
                 <!-- Search Bar -->
                 <div class="search-query col-xs-12 col-md-3">
                     <form  id="searchbar" class="search bar d-flex" role="search" action="<?php echo $_SERVER["PHP_SELF"];?>" method="post">
-                        <input name="search" onkeypress="printKey(this)" class="form-control" type="text" placeholder="Search" aria-label="Search">
+                        <input name="search" class="form-control" type="text" placeholder="Search" aria-label="Search">
                     </form>
                 </div>
 
@@ -361,7 +364,7 @@ if(isset($_SESSION['cart']) == false && isset($_SESSION['quantites']) == false) 
     </div>
 
     <!-- Custom scripts -->
-    <script src="./scripts/button.js"> reloadSession(); // Reload session variable data to JS variables. </script>
+    <script src="./scripts/button.js"> </script>
 </body>
 
 </html>
